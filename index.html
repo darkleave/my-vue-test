@@ -1,0 +1,139 @@
+<!-- 开发版本，包含有用的控制台警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<div id="app">
+  {{ message }}
+  <div>{{second}}</div>
+</div>
+
+
+<div id="app-2">
+	<span v-bind:title="message" v-bind:id="id">
+	鼠标悬停此处几秒，
+    可以看到此处动态绑定的 title！
+	</span>
+</div>
+
+<div id="app-3">
+	<span v-if="seen1">现在你可以看到我</span>
+</div>
+
+<div id="app-4">
+	  <ol>
+	    <li v-for="todo in todos">
+	      {{ todo.text }}
+	    </li>
+	  </ol>
+	</div>
+
+<div id="app-5">
+  <p>{{ message }}</p>
+  <button v-on:click="reverseMessage">翻转 message</button>
+</div>
+
+<div id="app-6">
+	<p>{{message}}</p>
+	<input v-model="message">
+</div>
+<div id="test1">
+<ol>
+	<todo-item1></todo-item1>
+</ol>
+</div>
+<!--
+
+<div id="app-7">
+
+	<ol>
+		<test-item v-for="item in groceryList" 
+				   v-bind:todo="item"
+				   v-bind:key="item.id">
+		
+		</test-item>
+	</ol>
+
+</div>
+
+-->
+
+
+<div id="app-7">
+  <ol>
+    <!--
+      现在我们为每个 todo-item 提供了 todo 对象，
+      其中它的内容是动态的。
+      我们还需要为每个组件提供一个 "key"，
+      这将在之后详细解释。
+    -->
+    <test-item
+      v-for="item in groceryList" 
+	  v-bind:test="item" 
+      v-bind:todo="item.text" 
+      v-bind:key="item.id" 
+	  >
+    </test-item>
+  </ol>
+</div>
+
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello Vue!',
+	second: 'Second!'
+  }
+})
+
+var data = {el:'#app-2',data:{message:'页面加载于 ' + new Date().toLocaleString(),id:'112233'}};
+var app2 = new Vue(data);
+
+var data3 = {el:"#app-3",data:{seen1:true}};
+var app3 = new Vue(data3);
+
+var data4 = {el:'#app-4',data:{todos:[{text:'学习javascript'},{text:'学习vue'},{text:'学习激动人心的代码'}]}};
+var app4 = new Vue(data4);
+
+
+var app5 = new Vue({
+  el: '#app-5',
+  data: {
+    message: 'Hello Vue.js!'
+  },
+  methods: {
+    reverseMessage: function () {
+      this.message = this.message.split('').reverse().join('')
+    }
+  }
+})
+
+var data6 = {el:'#app-6',data:{message:'Hello vue'}}
+var app6 = new Vue(data6);
+
+// 定义一个被命名为 todo-item 的新组件
+Vue.component('todo-item1',{template:'<li>这是一个被预先定义的模板</li>'});
+
+var test1 = new Vue({el:'#test1',data:{}});
+
+Vue.component('test-item', {
+  // todo-item 组件现在接受一个 "prop"，
+  // 类似于一个自定义属性。
+  // 此 prop 名为 todo。
+  props: ['test','todo'],
+  template: '<li :id="todo" v-bind:title="todo">{{ todo}}-{{test}}</li>'
+})
+
+
+var app7 = new Vue({
+  el: '#app-7',
+  data: {
+    groceryList: [
+      { id: 0, text: '蔬菜' },
+      { id: 1, text: '奶酪' },
+      { id: 2, text: '其他人类食物' }
+    ]
+  }
+})
+
+
+
+</script>
