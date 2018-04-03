@@ -77,6 +77,16 @@
 </div>
 
 
+<div id="app9">
+<template v-show="ok">
+<h1 >Hello1!</h1>
+<h1 >Hello2</h1>
+<h1 >Hello3!</h1>
+v-show¶ÔtemplateÎÞÐ§
+</template>
+</div>
+
+
 <script>
 var vue = new Vue({
 
@@ -159,6 +169,12 @@ var vue8 = new Vue({
 
 });
 
+var vue9 = new Vue({
+	el:'#app9',
+	data:{
+		ok:true
+	}
 
+});
 
 </script>
