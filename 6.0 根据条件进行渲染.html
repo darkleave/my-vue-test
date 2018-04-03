@@ -1,0 +1,164 @@
+<!-- 开发版本，包含有用的控制台警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+<h1 id="app1" v-if="ok">Yes</h1>
+
+<div id="app2">
+<h1 v-if="ok">是</h1>
+<h1 v-else>否</h1>
+</div>
+
+<div id="app3">
+<template  v-if="ok">
+  <h1>标题</h1>
+  <p>段落 1</p>
+  <p>段落 2</p>
+</template>
+</div>
+<div id="app4">
+<div v-if="Math.random() > 0.5">
+  现在你可以看到我
+</div>
+<div v-else>
+  现在你看不到我
+</div>
+</div>
+
+<div id="app5">
+
+<div v-if="type === 'A'">
+  A
+</div>
+<div v-else-if="type === 'B'">
+  B
+</div>
+<div v-else-if="type === 'C'">
+  C
+</div>
+<div v-else>
+  非 A/B/C
+</div>
+
+</div>
+
+
+<div id="app6">
+
+<template v-if="loginType === 'username'">
+  <label>用户名</label>
+  <input placeholder="请输入用户名">
+</template>
+<template v-else>
+  <label>邮箱</label>
+  <input placeholder="请输入邮箱">
+</template>
+<button v-on:click="change">改变登录方式</button>
+</div>
+
+<div id="app7">
+<template v-if="loginType === 'username'">
+  <label>用户名</label>
+  <input placeholder="请输入用户名" key="username-input">
+</template>
+<template v-else>
+  <label>邮箱</label>
+  <input placeholder="请输入邮箱" key="email-input">
+</template>
+<button v-on:click="change">改变登录方式</button>
+</div>
+
+
+
+<div id="app8">
+
+<h1 v-show="ok">Hello!</h1>
+
+</div>
+
+
+<script>
+var vue = new Vue({
+
+	el:'#app1',
+	data:{
+		ok:true
+	}
+
+});
+
+var vue1 = new Vue({
+
+	el:'#app2',
+	data:{
+		ok:true
+	}
+
+});
+
+var vue3 = new Vue({
+
+	el:'#app3',
+	data:{
+		ok:true
+	}
+
+});
+
+var vue4 = new Vue({
+
+	el:'#app4'
+
+});
+
+var vue5 = new Vue({
+
+	el:'#app5',
+	data:{
+		type:'A'
+	}
+
+});
+
+var vue6 = new Vue({
+
+	el:'#app6',
+	data:{
+		loginType:'username'
+	},
+	methods: {
+		change: function(){
+			this.loginType = this.loginType === 'username' ? 'other' : 'username';
+		}
+	
+	}
+
+});
+
+var vue7 = new Vue({
+
+	el:'#app7',
+	data:{
+		loginType:'username'
+	},
+	methods: {
+		change: function(){
+			this.loginType = this.loginType === 'username' ? 'other' : 'username';
+		}
+	
+	}
+
+});
+
+var vue8 = new Vue({
+
+	el:'#app8',
+	data:{
+		ok:true
+	}
+
+});
+
+
+
+</script>
