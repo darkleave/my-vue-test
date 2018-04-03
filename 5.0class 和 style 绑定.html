@@ -1,0 +1,155 @@
+<!-- 开发版本，包含有用的控制台警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<div id="app1">
+<div v-bind:class="{ active: isActive }">first</div>
+</div>
+
+<div id="app2" class="static"
+     v-bind:class="{ active: isActive, 'text-danger': hasError }">
+	 second
+</div>
+
+
+<div id="app3" v-bind:class="classObject">third</div>
+
+<div id="app4" v-bind:class="classObject">four</div>
+
+<div id="app5" v-bind:class="[activeClass, errorClass]">five</div>
+
+<div id="app6" v-bind:class="[isActive ? activeClass : '', errorClass]">six</div>
+
+<div id="app7" v-bind:class="[{ active: isActive }, errorClass]">seven</div>
+
+<div id="app8">
+<my-component class="baz boo"></my-component>
+
+<my-component v-bind:class="{ active: isActive }"></my-component>
+
+</div>
+
+<div id="app9" v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">nine</div>
+
+
+<div id="app10" v-bind:style="styleObject">ten</div>
+
+<div id="app11" v-bind:style="[baseStyles, overridingStyles]">eleven</div>
+
+
+
+<script>
+
+var vue = new Vue({
+	el:'#app1',
+	data:{
+		isActive:true,
+	}
+});
+
+var vue2 = new Vue({
+	el:'#app2',
+	data:{
+		isActive:true,
+		hasError:true,
+	}
+});
+
+
+var vue3 = new Vue({
+	el:'#app3',
+	data:{
+		classObject:{
+		active: true,
+		'text-danger': false
+		}
+	}
+});
+
+var vue4 = new Vue({
+	el:'#app4',
+	data:{
+
+		isActive: true,
+		error: null	
+		
+	},
+	computed: {
+		classObject: function () {
+			return {
+			  active: this.isActive && !this.error,
+			  'text-danger': this.error && this.error.type === 'fatal'
+			}
+		}	
+	}
+});
+
+
+var vue5 = new Vue({
+	el:'#app5',
+	data:{
+		activeClass: 'active',
+		errorClass: 'text-danger'
+	}
+});
+
+var vue6 = new Vue({
+	el:'#app6',
+	data:{
+		isActive:false,
+		activeClass: 'active',
+		errorClass: 'text-danger'
+	}
+});
+
+var vue7 = new Vue({
+	el:'#app7',
+	data:{
+		isActive:true,
+		activeClass: 'active',
+		errorClass: 'text-danger'
+	}
+});
+
+Vue.component('my-component', {
+  template: '<p class="foo bar">Hi</p>'
+})
+
+var vue8 = new Vue({
+	el:'#app8',
+	data:{
+		isActive:true
+	}
+});
+
+var vue9 = new Vue({
+	el:'#app9',
+	data: {
+	  activeColor: 'red',
+	  fontSize: 30
+	}
+});
+
+var vue10 = new Vue({
+	el:'#app10',
+	data: {
+	  styleObject: {
+		color: 'red',
+		fontSize: '13px'
+	  }
+	}
+});
+
+var vue11 = new Vue({
+	el:'#app11',
+	data: {
+	  baseStyles: {
+		color: 'red',
+		fontSize: '13px'
+	  },
+	  overridingStyles:{
+		fontSize:'50px',
+		float:'left'
+	  }
+	}
+});
+
+</script>
