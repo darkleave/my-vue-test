@@ -1,0 +1,250 @@
+<!-- 开发版本，包含有用的控制台警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<ul id="example-1">
+  <li v-for="item in items">
+    {{ item.message }}
+  </li>
+</ul>
+
+
+
+<ul id="example-2">
+  <li v-for="(item, index) in items">
+    {{ parentMessage }} - {{ index }} - {{ item.message }}
+  </li>
+</ul>
+
+
+<div id="test-1" >
+<span v-for="value of 10">{{value}},</span>
+</div>
+
+<ul id="v-for-object" class="demo">
+  <li v-for="value in object">
+    {{ value }}
+  </li>
+</ul>
+
+
+<div id="test-2" >
+  <span v-for="(value, key) in object">{{ key }}: {{ value }}</span>
+</div>
+
+<div id="test-3" >
+  <span v-for="(value, key,index) in object">{{ index }}. {{ key }}: {{ value }}</span>
+</div>
+<ul id="test-4">
+<li v-for="n in evenNumbers">{{ n }}</li>
+</ul>
+
+<ul id="test-5">
+<li v-for="n in even(numbers)">{{ n }}</li>
+</ul>
+
+<ul id="test-6">
+  <template v-for="item in items">
+    <li>{{ item.msg }}</li>
+    <li class="divider"></li>
+  </template>
+</ul>
+
+<ul id="test-7">
+
+<li v-for="todo in todos" v-if="!todo.isComplete">
+  {{ todo.msg }}
+</li>
+
+</ul>
+
+<div id="test-8">
+<ul  v-if="todos.length">
+  <li v-for="todo in todos">
+    {{ todo + '-' + todos.length }}
+  </li>
+</ul>
+<p v-else>No todos left!</p>
+</div>
+
+
+
+<div id="todo-list-example">
+  <input
+    v-model="newTodoText"
+    v-on:keyup.enter="addNewTodo"
+    placeholder="Add a todo"
+  >
+  <ul>
+    <li
+      is="todo-item"
+      v-for="(todo, index) in todos"
+      v-bind:key="todo.id"
+      v-bind:title="todo.title"
+      v-on:remove="todos.splice(index, 1)"
+    ></li>
+  </ul>
+</div>
+
+<script>
+
+var example1 = new Vue({
+  el: '#example-1',
+  data: {
+    items: [
+      { message: 'Foo' },
+      { message: 'Bar' }
+    ]
+  }
+})
+
+var example2 = new Vue({
+  el: '#example-2',
+  data: {
+    parentMessage: 'Parent',
+    items: [
+      { message: 'Foo' },
+      { message: 'Bar' }
+    ]
+  }
+})
+
+var t = new Vue({
+  el: '#test-1'
+})
+
+new Vue({
+  el: '#v-for-object',
+  data: {
+    object: {
+      firstName: 'John',
+      lastName: 'Doe',
+      age: 30
+    }
+  }
+})
+
+new Vue({
+  el: '#test-2',
+  data: {
+    object: {
+      firstName: 'John',
+      lastName: 'Doe',
+      age: 30
+    }
+  }
+})
+
+new Vue({
+  el: '#test-3',
+  data: {
+    object: {
+      firstName: 'John',
+      lastName: 'Doe',
+      age: 30
+    }
+  }
+})
+
+new Vue({
+  el: '#test-4',
+  data: {
+		  numbers: [ 1, 2, 3, 4, 5 ]
+		},
+		computed: {
+		  evenNumbers: function () {
+			return this.numbers.filter(function (number) {
+			  return number % 2 === 0
+			})
+		  }
+	}
+})
+
+new Vue({
+  el: '#test-5',
+  data: {
+		  numbers: [ 1, 2, 3, 4, 5 ]
+		},
+  methods: {
+	  even: function (numbers) {
+		return numbers.filter(function (number) {
+		  return number % 2 === 0
+		})
+	  }
+  }
+})
+
+var test6 = new Vue({
+  el: '#test-6',
+  data: {
+    items: [
+      { msg: 'Msg1' },
+      { msg: 'Msg2' }
+    ]
+  }
+})
+
+var test7 = new Vue({
+  el: '#test-7',
+  data: {
+    todos: [
+      { isComplete: true,msg: '已完成数据'},
+      { isComplete: false,msg: '未完成数据' }
+    ]
+  }
+})
+var test8 = new Vue({
+  el: '#test-8',
+  data: {
+    todos: [
+      'aaa',
+      'bbb'
+    ]
+  }
+})
+
+Vue.component('todo-item', {
+  template: '\
+    <li>\
+      {{ title }}\
+      <button v-on:click="$emit(\'remove\')">X</button>\
+    </li>\
+  ',
+  props: ['title']
+})
+
+new Vue({
+  el: '#todo-list-example',
+  data: {
+    newTodoText: '',
+    todos: [
+      {
+        id: 1,
+        title: 'Do the dishes',
+      },
+      {
+        id: 2,
+        title: 'Take out the trash',
+      },
+      {
+        id: 3,
+        title: 'Mow the lawn'
+      }
+    ],
+    nextTodoId: 4
+  },
+  methods: {
+    addNewTodo: function () {
+      this.todos.push({
+        id: this.nextTodoId++,
+        title: this.newTodoText
+      })
+      this.newTodoText = ''
+    }
+  }
+})
+
+
+
+</script>
