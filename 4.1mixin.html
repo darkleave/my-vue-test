@@ -1,0 +1,117 @@
+<!-- 开发版本，包含有用的控制台警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+<div id="test1">
+<div>
+message:{{message}}
+</div>
+<div>bar:{{bar}}</div>
+<div>foo:{{foo}}</div>
+</div>
+
+
+<script>
+
+// 定义一个 mixin 对象
+var myMixin = {
+  created: function () {
+    this.hello()
+  },
+  methods: {
+    hello: function () {
+      console.log('来自 mixin 对象的 hello！')
+    }
+  }
+}
+
+// 定义一个使用以上 mixin 对象的组件
+var Component = Vue.extend({
+  mixins: [myMixin]
+})
+
+var component = new Component() // => "来自 mixin 对象的 hello！"
+
+
+
+var mixin = {
+  data: function () {
+    return {
+      message: 'hello',
+      foo: 'abc'
+    }
+  }
+}
+
+new Vue({
+  el:'#test1',
+  mixins: [mixin],
+  data: function () {
+    return {
+      message: 'goodbye',
+      bar: 'def'
+    }
+  },
+  created: function () {
+    console.log(this.$data)
+    // => { message: "goodbye", foo: "abc", bar: "def" }
+  }
+})
+
+var mixin1 = {
+  created: function () {
+    console.log('mixin 对象的钩子函数被调用')
+  }
+}
+
+new Vue({
+  mixins: [mixin1],
+  created: function () {
+    console.log('组件的钩子函数被调用')
+  }
+})
+
+
+var mixin2 = {
+  methods: {
+    foo: function () {
+      console.log('foo')
+    },
+    conflicting: function () {
+      console.log('from mixin')
+    }
+  }
+}
+
+var vm = new Vue({
+  mixins: [mixin2],
+  methods: {
+    bar: function () {
+      console.log('bar')
+    },
+    conflicting: function () {
+      console.log('from self')
+    }
+  }
+})
+
+vm.foo() // => "foo"
+vm.bar() // => "bar"
+vm.conflicting() // => "from self"
+
+// 为自定义选项 `myOption` 注入一个处理函数
+Vue.mixin({
+  created: function () {
+    var myOption = this.$options.myOption
+    if (myOption) {
+      console.log('global:' + myOption)
+    }
+  }
+})
+
+new Vue({
+  myOption: 'hello!'
+})
+// => "hello!"
+
+</script>

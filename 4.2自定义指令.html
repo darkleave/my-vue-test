@@ -1,0 +1,90 @@
+<!-- 开发版本，包含有用的控制台警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+
+<div id="test1">
+
+<input v-focus>
+
+</div>
+
+
+<div id="test2">
+
+<input v-focus>
+
+</div>
+
+<div id="hook-arguments-example" v-demo:foo.a.b="message"></div>
+
+<div id="test3" v-demo1="{ color: 'white', text: 'hello!' }"></div>
+
+
+<script>
+// 注册一个名为 `v-focus` 的全局自定义指令
+Vue.directive('focus', {
+  // 当绑定的元素插入到 DOM 时调用此函数……
+  inserted: function (el) {
+    // 元素调用 focus 获取焦点
+    el.focus()
+  }
+})
+
+new Vue({
+	
+	el:'#test1'
+	
+});
+
+
+new Vue({
+	el:'#test2',
+	directives: {
+	  focus: {
+		// 指令定义对象
+		inserted: function (el) {
+		  el.focus()
+		}
+	  }
+	}
+});
+
+
+Vue.directive('demo', {
+  bind: function (el, binding, vnode) {
+    var s = JSON.stringify
+    el.innerHTML =
+      'name: '       + s(binding.name) + '<br>' +
+      'value: '      + s(binding.value) + '<br>' +
+      'expression: ' + s(binding.expression) + '<br>' +
+      'argument: '   + s(binding.arg) + '<br>' +
+      'modifiers: '  + s(binding.modifiers) + '<br>' +
+      'vnode keys: ' + Object.keys(vnode).join(', ')
+  }
+})
+
+new Vue({
+  el: '#hook-arguments-example',
+  data: {
+    message: 'hello!'
+  }
+})
+
+Vue.directive('color-swatch', function (el, binding) {
+  el.style.backgroundColor = binding.value
+})
+
+
+
+Vue.directive('demo1', function (el, binding) {
+  console.log(binding.value.color) // => "white"
+  console.log(binding.value.text)  // => "hello!"
+})
+
+new Vue({
+	el:'#test3'
+});
+
+</script>

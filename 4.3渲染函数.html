@@ -1,0 +1,194 @@
+<!-- 开发版本，包含有用的控制台警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+
+<div id="test1">
+<anchored-heading :level="level">Hello world!</anchored-heading>
+</div>
+
+<div id="test2">
+<anchored-heading1 :level="level">Hello world!</anchored-heading1>
+</div>
+
+<div id="test3">
+<anchored-heading2 :level="level"><div><span>Hello world!</span></div></anchored-heading2>
+</div>
+
+
+<div id="test4">
+
+<ul v-if="items.length">
+  <li v-for="item in items">{{ item.name }}</li>
+</ul>
+<p v-else>No items found.</p>
+
+</div>
+
+<div id="test5">
+
+<testcom1 v-bind:items="items"></testcom1>
+
+</div>
+
+<div id="test6">
+<h1>baseContent</h1>
+</div>
+
+
+<script type="text/x-template" id="anchored-heading-template">
+  <h1 v-if="level === 1">
+    <slot></slot>
+  </h1>
+  <h2 v-else-if="level === 2">
+    <slot></slot>
+  </h2>
+  <h3 v-else-if="level === 3">
+    <slot></slot>
+  </h3>
+  <h4 v-else-if="level === 4">
+    <slot></slot>
+  </h4>
+  <h5 v-else-if="level === 5">
+    <slot></slot>
+  </h5>
+  <h6 v-else-if="level === 6">
+    <slot></slot>
+  </h6>
+</script>
+
+
+<script>
+Vue.component('anchored-heading', {
+  template: '#anchored-heading-template',
+  props: {
+    level: {
+      type: Number,
+      required: true
+    }
+  }
+})
+
+var test1 = new Vue({
+	el:'#test1',
+	data:{
+		level:1
+	},
+});
+
+Vue.component('anchored-heading1', {
+  render: function (createElement) {
+	
+	console.log(this.$slots.default);
+  
+    return createElement(
+      'h' + this.level,   // tag name 标签名称
+      this.$slots.default // 子组件中的阵列
+    )
+  },
+  props: {
+    level: {
+      type: Number,
+      required: true
+    }
+  }
+})
+
+var test2 = new Vue({
+	el:'#test2',
+	data:{
+		level:1
+	},
+});
+
+
+var getChildrenTextContent = function (children) {
+  return children.map(function (node) {
+    return node.children
+      ? getChildrenTextContent(node.children)
+      : node.text
+  }).join('')
+}
+
+Vue.component('anchored-heading2', {
+  render: function (createElement) {
+    // create kebabCase id
+    var headingId = getChildrenTextContent(this.$slots.default)
+      .toLowerCase()
+      .replace(/\W+/g, '-')
+      .replace(/(^\-|\-$)/g, '')
+
+    return createElement(
+      'h' + this.level,
+      [
+        createElement('a', {
+          attrs: {
+            name: headingId,
+            href: '#' + headingId
+          }
+        }, this.$slots.default)
+      ]
+    )
+  },
+  props: {
+    level: {
+      type: Number,
+      required: true
+    }
+  }
+})
+
+var test3 = new Vue({
+	el:'#test3',
+	data:{
+		level:1
+	},
+});
+
+var test4 = new Vue({
+	el:'#test4',
+	data:{
+		items:[
+			{name:'a'},
+			{name:'b'},
+			{name:'c'}
+		]
+	}
+});
+
+Vue.component('testcom1',{
+
+	props: ['items'],
+	render: function (createElement) {
+	  if (this.items.length) {
+		return createElement('ul', this.items.map(function (item) {
+		  return createElement('li', item.name)
+		}))
+	  } else {
+		return createElement('p', 'No items found.')
+	  }
+	}
+});
+
+var test5 = new Vue({
+	el:'#test5',
+	data:{
+		items:[
+			{name:'a'},
+			{name:'b'},
+			{name:'c'}
+		]
+	}
+});
+
+var test6 = new Vue({
+	el:'#test6',
+	data:{
+	},
+	render: function(createElement){
+		return createElement('h1','renderTest');
+	}
+});
+
+
+</script>
